@@ -16,7 +16,7 @@ class Todo extends Component {
         this.handleInput = this.handleInput.bind(this);
     }
     handleToggleTodo(todo) {
-            this.props.toggleTodo(todo.id);
+            this.props.toggleTodo(todo);
         }
 
      handleRemoveTodo(id) {
@@ -31,7 +31,7 @@ class Todo extends Component {
         }
 
     handleSubmit() {
-            this.props.updateTodo(this.props.task.id,this.state.updatedTitle)
+            this.props.updateTodo(this.props.task,this.state.updatedTitle)
             this.setState({
                 editing: false
             })

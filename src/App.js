@@ -2,8 +2,12 @@ import React from 'react';
 import TodoForm from './components/TodoForm'
 import Todo from './components/Todo'
 import FooterBar from './components/FooterBar'
+import { DB_CONFIG } from './config/config'
+import firebase from 'firebase/app'
+import 'firebase/database'
+
 import './App.css'
-import uuid from "uuid";
+
 
 class App extends React.Component {
     constructor(props) {
@@ -16,77 +20,98 @@ class App extends React.Component {
         this.updateTodo=this.updateTodo.bind(this);
         this.clearCompleted=this.clearCompleted.bind(this);
         this.updateShow=this.updateShow.bind(this);
+        this.app = firebase.initializeApp(DB_CONFIG);
+        this.database = this.app.database().ref().child('todos');
         this.state = {
                     todos: [],
-                    id:uuid(),
+
                     toggle: false,
                     filter: "all"
                     }
 
     }
+        componentWillMount() {
+                var tasks = [];
+                this.database.on('value', (snap) => {
 
+                        snap.forEach((childSnap) => {
 
-    addTodo (taskName) {
-              this.setState ({
-              todos : [{ id : uuid(),
-                         title: taskName,
-                         isCompleted: false} , ...this.state.todos]
-    })
-}
-    removeTodo(id){
-        const remainder = this.state.todos.filter(item => item.id !== id);
-        this.setState({todos: remainder});
+                            var task = {
+                                'id': childSnap.key,
+                                'title': childSnap.val().title,
+                                'isCompleted': childSnap.val().isCompleted
+                            }
+                            tasks.push(task)
+                        });
+                        this.setState({todos: tasks});
+
+                        tasks = [];
+                    }
+                )
 
     }
 
-    toggleAll () {
-              const newTodos = this.state.todos;
-              newTodos.forEach(todo =>
-              { if (todo.isCompleted === this.state.toggle) {
-                  todo.isCompleted= !this.state.toggle
-                    this.setState({todos: newTodos}) }
-
-                this.setState ({toggle : !this.state.toggle})
-
-          })}
 
 
-
-
-    toggleTodo (id) {
-        this.setState({
-         todos : this.state.todos.map (todo => {
-             if (todo.id === id ) {
-               return {
-
-                   ...todo,
-                   isCompleted: !todo.isCompleted
-                    }
+    addTodo(taskName) {
+             const temp = {
+                 title: taskName,
+                 isCompleted: false
              }
-             else
-             {
-             return todo
-             } })})}
+             this.database.push(temp);
 
-    updateTodo (id,newTitle) {
-            this.setState({
-            todos:this.state.todos.map(todo=>{
-                if(todo.id===id){
-                    return{
-                            ...todo,
-                            title:newTitle
-                        }
+         }
+
+    removeTodo(id) {
+
+            this.database.child(id).remove();
+        }
+
+
+    toggleAll() {
+             this.state.todos.map((todo) => {
+                if (todo.isCompleted === this.state.toggle) {
+                    var updateTodo = {
+                        "id": todo.id,
+                        "title": todo.title,
+                        "isCompleted": !this.state.toggle
+                    }
+                    this.database.child(todo.id).update(updateTodo);
                 }
-                else{
-                    return todo
-                }
-                })
-                  })}
- clearCompleted()
-                {
-                    const remainder = this.state.todos.filter(item => item.isCompleted!==true);
-                    this.setState({todos: remainder});
-                }
+                this.setState({toggle: !this.state.toggle})
+
+            })
+        }
+
+
+
+
+    toggleTodo(todo) {
+
+            const temp = {
+                'id': todo.id,
+                'title': todo.title,
+                'isCompleted': !todo.isCompleted
+            }
+            this.database.child(todo.id).update(temp)
+        }
+
+    updateTodo(todo, updatedName) {
+            var updateTodo = {
+                "id": todo.id,
+                "title": updatedName,
+                "isCompleted": todo.isCompleted
+            }
+            this.database.child(todo.id).update(updateTodo);
+        }
+
+ clearCompleted() {
+         this.state.todos.map((todo) => {
+             if (todo.isCompleted) {
+                 this.database.child(todo.id).remove();
+             }
+         })
+     }
  updateShow(str) {
           this.setState({filter: str});
                         }

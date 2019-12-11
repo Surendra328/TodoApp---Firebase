@@ -27,7 +27,7 @@ The funtionalities of the sampletodo are :
    This script contains :
 
    * docker image build -t myimage1 . (Create docker image from docker file)
-   * docker run -it myimage1 bash  (This will run container)
+   * docker run -it myimage1 bash  (This will run image to get container)
    
    press ctrl+P and ctrl+Q ( This will take us to out of container without stopping container)
 

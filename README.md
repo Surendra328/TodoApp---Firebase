@@ -9,9 +9,48 @@ The funtionalities of the sampletodo are :
 	filtering 
 	clearing completed todos
 
-Git Cloning :
+
+**************************************************************************************************************************************************************************************************************
+
+                                                                                   HOW TO WORK WITH OUR PROJECT:
+
+1 . Git Cloning :
     
-    git clone https://github.com/Surendra328/TodoApp---Firebase.git
+    
+
+2. Navigate to our project folder
+
+3. There you will find dscript.sh file
+
+   open terminal there and run script using sh dscript.sh
+
+   This script contains :
+
+   * docker image build -t myimage1 . (Create docker image from docker file)
+   * docker run -it myimage1 bash  (This will run container)
+   
+   press ctrl+P and ctrl+Q ( This will take us to out of container without stopping container)
+
+
+4. Execute below command in CMD.
+
+   EXPOSE 3000 (Port)
+
+   PORT MAPPING :
+
+		docker run -p 3000(Container port):3000(Docker host port) IMAGE_NAME
+
+5.Goto browser :
+
+	Browse for :
+
+	
+	http://localhost:3000/ 
+
+
+*************************************************************************************************************************************************************************************************************
+
+
 
 
 
@@ -21,6 +60,16 @@ Git Cloning :
 
 * npm install (npm install should be done , to run npm start)
 * npm start
+
+Firebase:
+
+npm install firebase --save
+
+
+npm install string 
+
+
+
 
 Docker:
 
@@ -33,7 +82,7 @@ Docker:
         then we can observe container id and path .. if we want to check the files give ls command and can find node_modules,src,public,
         package.json
         we can check by start npm then we get ip's
-        -->npm run build command ,, in main container then will see 
+        -->npm run build command ,, in main container then will sasee 
         exit and come back to main project in command line and write
         sudo docker cp (container id):/usr/src/app .  , to get whole container data into our server including with build
    

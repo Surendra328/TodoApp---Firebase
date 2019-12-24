@@ -26,26 +26,16 @@ The funtionalities of the sampletodo are :
 
    This script contains :
 
-   * docker image build -t myimage1 . (Create docker image from docker file)
-   * docker run -it myimage1 bash  (This will run image to get container)
+   * docker image build -t myimage . (Create docker image from docker file)
+   * docker container run --publish 3006:3000 --detach myimage (This will run image to get container and mapped the container port to host port)
    
-   press ctrl+P and ctrl+Q ( This will take us to out of container without stopping container)
-
-
-4. Execute below command in CMD.
-
-   EXPOSE 3000 (Port)
-
-   PORT MAPPING :
-
-		docker run -p 3000(Container port):3000(Docker host port) IMAGE_NAME
-
-5.Goto browser :
+   
+4.Goto browser :
 
 	Browse for :
 
 	
-	http://localhost:3000/ 
+	http://localhost:3006/ 
 
 
 *************************************************************************************************************************************************************************************************************

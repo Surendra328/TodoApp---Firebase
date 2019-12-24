@@ -1,3 +1,6 @@
 docker image build -t myimage .
-docker run -it myimage bash
+docker container run --publish 3006:3000 --detach myimage   
+
+
+
 

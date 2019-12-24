@@ -32,6 +32,9 @@ class App extends React.Component {
     }
         componentWillMount() {
                 var tasks = [];
+
+
+
                 this.database.on('value', (snap) => {
 
                         snap.forEach((childSnap) => {
